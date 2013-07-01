@@ -87,6 +87,7 @@
 #include "../workqueue_internal.h"
 #include "../smpboot.h"
 
+#include <litmus/litmus.h>
 #include <litmus/trace.h>
 #include <litmus/sched_trace.h>
 
@@ -3107,6 +3108,8 @@ litmus_need_resched_nonpreemptible:
 
 	if (need_resched())
 		goto need_resched;
+
+	srp_ceiling_block();
 }
 
 static inline void sched_submit_work(struct task_struct *tsk)
