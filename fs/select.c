@@ -29,6 +29,8 @@
 #include <linux/sched/rt.h>
 #include <linux/freezer.h>
 
+#include <litmus/litmus.h> /* for is_realtime() */
+
 #include <asm/uaccess.h>
 
 
@@ -78,7 +80,7 @@ long select_estimate_accuracy(struct timespec *tv)
 	 * Realtime tasks get a slack of 0 for obvious reasons.
 	 */
 
-	if (rt_task(current))
+	if (rt_task(current) || is_realtime(current))
 		return 0;
 
 	ktime_get_ts(&now);
