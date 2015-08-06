@@ -54,6 +54,8 @@
  */
 struct secondary_data secondary_data;
 
+#include <litmus/preempt.h>
+
 /*
  * control for which core is the next to come out of the secondary
  * boot "holding pen"
@@ -675,6 +677,8 @@ void handle_IPI(int ipinr, struct pt_regs *regs)
 #endif
 
 	case IPI_RESCHEDULE:
+		/* LITMUS^RT: take action based on scheduler state */
+		sched_state_ipi();
 		scheduler_ipi();
 		break;
 
